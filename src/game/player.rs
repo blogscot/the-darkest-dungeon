@@ -4,7 +4,6 @@ use std::fmt;
 use std::rc::Rc;
 
 use super::curio::Curio;
-use super::hall::Hall;
 use super::room::Room;
 
 const MAX_HP: i32 = 25;
