@@ -79,13 +79,11 @@ impl Player {
 
   /// Find one of the neighbors of the current room based on its name. Case insensitive.
   fn find_room(&self, room: String) -> Result<Rc<RefCell<Room>>, ()> {
-    let halls: &Vec<Rc<Hall>> = &self.location.borrow().halls;
+    let halls = &self.location.borrow().halls;
 
-    let adjacent_rooms: Vec<Rc<RefCell<Room>>> =
-      halls.iter().map(|hall| hall.right.clone()).collect();
-
-    let mut room_found: Vec<Rc<RefCell<Room>>> = adjacent_rooms
+    let mut room_found: Vec<Rc<RefCell<Room>>> = halls
       .into_iter()
+      .map(|hall| hall.right.clone())
       .filter(|adjacent_room| {
         let adjacent_room_name = &adjacent_room.borrow().name;
         adjacent_room_name.to_lowercase() == room.to_lowercase()
