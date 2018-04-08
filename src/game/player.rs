@@ -67,9 +67,11 @@ impl Player {
   pub fn act(&mut self, cmd: Command) -> Result<(), ()> {
     match cmd {
       Command::Go(room_name) => {
-        let new_room = self.find_room(room_name);
-        self.location = new_room.unwrap();
-        Ok(())
+        if let Ok(new_room) = self.find_room(room_name) {
+          self.location = new_room;
+          return Ok(());
+        }
+        Err(())
       }
       _ => Err(()),
     }
@@ -89,7 +91,7 @@ impl Player {
         adjacent_room_name.to_lowercase() == room.to_lowercase()
       })
       .collect();
-    Ok(room_found.pop().unwrap())
+    room_found.pop().ok_or(())
   }
 }
 
