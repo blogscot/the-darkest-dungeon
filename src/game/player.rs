@@ -4,10 +4,12 @@ use std::fmt;
 use std::rc::Rc;
 
 use super::curio::Curio;
+use super::hall::Hall;
 use super::room::Room;
 
 const MAX_HP: i32 = 25;
 
+#[derive(Debug)]
 pub enum Command {
   Go(String),
   Shoot(String),
@@ -63,12 +65,31 @@ impl Player {
 
   /// Execute the given command on the player and board state.
   pub fn act(&mut self, cmd: Command) -> Result<(), ()> {
-    unimplemented!();
+    match cmd {
+      Command::Go(room_name) => {
+        let new_room = self.find_room(room_name);
+        self.location = new_room.unwrap();
+        Ok(())
+      }
+      _ => Err(()),
+    }
   }
 
   /// Find one of the neighbors of the current room based on its name. Case insensitive.
   fn find_room(&self, room: String) -> Result<Rc<RefCell<Room>>, ()> {
-    unimplemented!()
+    let halls: &Vec<Rc<Hall>> = &self.location.borrow().halls;
+
+    let adjacent_rooms: Vec<Rc<RefCell<Room>>> =
+      halls.iter().map(|hall| hall.right.clone()).collect();
+
+    let mut room_found: Vec<Rc<RefCell<Room>>> = adjacent_rooms
+      .into_iter()
+      .filter(|adjacent_room| {
+        let adjacent_room_name = &adjacent_room.borrow().name;
+        adjacent_room_name.to_lowercase() == room.to_lowercase()
+      })
+      .collect();
+    Ok(room_found.pop().unwrap())
   }
 }
 
