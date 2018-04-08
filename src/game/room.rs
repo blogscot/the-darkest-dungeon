@@ -1,5 +1,3 @@
-use std::cell::RefCell;
-use std::mem;
 use std::rc::Rc;
 
 use super::curio::Curio;
@@ -32,12 +30,11 @@ impl Room {
   }
 
   pub fn neighbors_string(&self) -> String {
-    // let mut message = String::new();
-    let neighbours: Vec<String> = self
+    self
       .halls
       .iter()
       .map(|hall| hall.right.borrow().name.clone())
-      .collect();
-    neighbours.join(", ")
+      .collect::<Vec<String>>()
+      .join(", ")
   }
 }
