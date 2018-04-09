@@ -1,0 +1,26 @@
+            Entry (0)
+              |
+            Foyer (1)
+              |
+   ----------------------------
+   |          |               |
+Library (2) Kitchen (4)    Dungeon (6)
+   |          |               |
+Chamber (3) Pantry (5)  -------------
+                        |            |
+                       Lair (7)    Sewer (9)
+                        |            |
+                 (8) Treasure ---- Cave1 (10)
+                                     |
+                              --------------
+                              |            |
+                       (13) Cave4 ------ Cave5 (14)
+                           /  |
+                          /   |
+                         /    |
+                        /     |
+                       /      |
+              (12) Cave3 -- Cave2 (11)
+                    (W)
+
+Passage (15) connects Library (2), Pantry (5), Treasure (8), Sewer (9)
