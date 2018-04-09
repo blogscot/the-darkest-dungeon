@@ -1,7 +1,11 @@
 use std::io::{self, Write};
 
+use std::cell::RefCell;
+use std::rc::Rc;
+
 use game::player::Command;
 use game::player::Player;
+use game::room::Room;
 
 #[derive(Debug)]
 enum Error {
@@ -13,11 +17,12 @@ pub fn game_loop(mut player: Player) {
   loop {
     // Print a user input prompt.
     println!(
-      "{}\n\nExits are: {}.\n\nWhat wouldst thou deau?",
+      "{}\n\n{}\nExits are: {}.",
       player,
+      get_room_contents(player.location.clone()),
       player.location.borrow().neighbors_string()
     );
-    print!("> ");
+    print!("\nWhat wouldst thou do?\n> ");
     io::stdout().flush().unwrap();
 
     let mut buf = String::new();
@@ -51,6 +56,20 @@ pub fn game_loop(mut player: Player) {
     }
   }
   println!("Score: {}", player.gold * 1000);
+}
+
+fn get_room_contents(room: Rc<RefCell<Room>>) -> String {
+  let contents = &room.borrow().contents;
+  let mut items = contents
+    .into_iter()
+    .map(|curio| format!("{}", curio))
+    .collect::<Vec<String>>()
+    .join(", ");
+
+  if items.is_empty() {
+    items = "nothing".to_string();
+  }
+  format!("The room contains: {}.", items)
 }
 
 fn parse_line(buf: &String) -> Result<Command, Error> {

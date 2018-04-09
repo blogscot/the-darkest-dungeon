@@ -99,7 +99,7 @@ impl fmt::Display for Player {
     /**/
     write!(
       f,
-      "You find yourself in {}.\n\nYou have {} HP and {} gold.",
+      "You find yourself in {}.\nYou have {} HP and {} gold.",
       /**/ self.location.borrow().name,
       self.hp,
       self.gold

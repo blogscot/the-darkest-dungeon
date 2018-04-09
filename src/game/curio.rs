@@ -1,4 +1,5 @@
 use rand;
+use std::fmt;
 
 const MAX_CHEST_VAL: u32 = 100;
 const MAX_TRAP_VAL: u32 = 10;
@@ -6,7 +7,7 @@ const MAX_FOOD_VAL: u32 = 10;
 const NUM_CURIO_VARIANTS: usize = 5;
 const NUM_NONRECURSIVE_CURIOS: usize = 3;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum Curio {
   Chest(i32),
   SpikeTrap(i32),
@@ -56,6 +57,18 @@ impl Curio {
       1 => Curio::rand_spike_trap(),
       2 => Curio::rand_food(),
       _ => unreachable!(),
+    }
+  }
+}
+
+impl fmt::Display for Curio {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    match *self {
+      Curio::Chest(_) => write!(f, "{}", "a chest"),
+      Curio::SpikeTrap(_) => write!(f, "{}", "a spiketrap"),
+      Curio::Food(_) => write!(f, "{}", "some food"),
+      Curio::IronMaiden(_, _) => write!(f, "{}", "an iron maiden"),
+      Curio::FallenAdventurer(_) => write!(f, "{}", "a fallen adventurer"),
     }
   }
 }
