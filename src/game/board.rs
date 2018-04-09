@@ -101,13 +101,16 @@ impl Board {
       let left: u64 = h[0].as_u64().ok_or("Unable to parse hall".to_string())?;
       let right: u64 = h[1].as_u64().ok_or("Unable to parse hall".to_string())?;
 
+      let room1 = &self.rooms[left as usize];
+      let room2 = &self.rooms[right as usize];
+
       // Forward path
       self.rooms[left as usize]
         .borrow_mut()
         .halls
         .push(Rc::new(Hall {
-          left: self.rooms[left as usize].clone(),
-          right: self.rooms[right as usize].clone(),
+          left: room1.clone(),
+          right: room2.clone(),
         }));
 
       // Return path
@@ -115,8 +118,8 @@ impl Board {
         .borrow_mut()
         .halls
         .push(Rc::new(Hall {
-          left: self.rooms[right as usize].clone(),
-          right: self.rooms[left as usize].clone(),
+          left: room2.clone(),
+          right: room1.clone(),
         }));
     }
     Ok(())
