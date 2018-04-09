@@ -97,22 +97,28 @@ impl Board {
       if h.len() > 2 {
         return Err("Invalid number of rooms per hall".to_string());
       }
-      let mut hall = Hall::new();
 
       let left: u64 = h[0].as_u64().ok_or("Unable to parse hall".to_string())?;
       let right: u64 = h[1].as_u64().ok_or("Unable to parse hall".to_string())?;
 
-      // Add room links to halls
-      hall.left = self.rooms[left as usize].clone();
-      hall.right = self.rooms[right as usize].clone();
-
-      // Add hall links to rooms
+      // Forward path
       self.rooms[left as usize]
         .borrow_mut()
         .halls
-        .push(Rc::new(hall));
-    }
+        .push(Rc::new(Hall {
+          left: self.rooms[left as usize].clone(),
+          right: self.rooms[right as usize].clone(),
+        }));
 
+      // Return path
+      self.rooms[right as usize]
+        .borrow_mut()
+        .halls
+        .push(Rc::new(Hall {
+          left: self.rooms[right as usize].clone(),
+          right: self.rooms[left as usize].clone(),
+        }));
+    }
     Ok(())
   }
 
