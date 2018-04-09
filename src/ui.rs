@@ -1,11 +1,7 @@
 use std::io::{self, Write};
 
-use std::cell::RefCell;
-use std::rc::Rc;
-
 use game::player::Command;
 use game::player::Player;
-use game::room::Room;
 
 #[derive(Debug)]
 enum Error {
@@ -16,10 +12,11 @@ enum Error {
 pub fn game_loop(mut player: Player) {
   loop {
     // Print a user input prompt.
+    let room_contents = &player.location.borrow().get_contents();
     println!(
       "{}\n\n{}\nExits are: {}.",
       player,
-      Room::get_contents(&player.location.borrow()),
+      room_contents,
       player.location.borrow().neighbors_string()
     );
     print!("\nWhat wouldst thou do?\n> ");
@@ -34,14 +31,13 @@ pub fn game_loop(mut player: Player) {
         break;
       }
       Ok(_) => {
-        let parse = parse_line(&buf);
-        if let Err(Error::Parse) = parse {
-          println!("I do not know how to {}!", buf.trim());
-        } else if let Err(Error::Quit) = parse {
-          break;
-        } else if let Ok(cmd) = parse {
-          if let Err(_) = player.act(cmd) {
-            println!("I don't know how to {}!", buf.trim());
+        match parse_line(&buf) {
+          Err(Error::Parse) => println!("I do not know how to {}!", buf.trim()),
+          Err(Error::Quit) => break,
+          Ok(cmd) => {
+            if let Err(_) = player.act(cmd) {
+              println!("I don't know how to {}!", buf.trim());
+            }
           }
         }
         if player.hp <= 0 {
@@ -65,16 +61,19 @@ fn parse_line(buf: &String) -> Result<Command, Error> {
   let mut tokens = tokens.map(|t| String::from(t).to_lowercase());
 
   let cmd = try!(tokens.next().ok_or(Error::Parse));
-  if cmd == "go" {
-    let room = try!(tokens.next().ok_or(Error::Parse));
-    Ok(Go(room))
-  } else if cmd == "shoot" {
-    let room = try!(tokens.next().ok_or(Error::Parse));
-    Ok(Shoot(room))
-  } else if cmd == "quit" {
-    println!("Bye forever :(");
-    Err(Error::Quit)
-  } else {
-    Err(Error::Parse)
+  match cmd.as_ref() {
+    "go" => {
+      let room = try!(tokens.next().ok_or(Error::Parse));
+      Ok(Go(room))
+    }
+    "shoot" => {
+      let room = try!(tokens.next().ok_or(Error::Parse));
+      Ok(Shoot(room))
+    }
+    "quit" => {
+      println!("Bye for now!");
+      Err(Error::Quit)
+    }
+    _ => Err(Error::Parse),
   }
 }
