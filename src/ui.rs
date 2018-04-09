@@ -19,7 +19,7 @@ pub fn game_loop(mut player: Player) {
     println!(
       "{}\n\n{}\nExits are: {}.",
       player,
-      get_room_contents(player.location.clone()),
+      Room::get_contents(&player.location.borrow()),
       player.location.borrow().neighbors_string()
     );
     print!("\nWhat wouldst thou do?\n> ");
@@ -56,20 +56,6 @@ pub fn game_loop(mut player: Player) {
     }
   }
   println!("Score: {}", player.gold * 1000);
-}
-
-fn get_room_contents(room: Rc<RefCell<Room>>) -> String {
-  let contents = &room.borrow().contents;
-  let mut items = contents
-    .into_iter()
-    .map(|curio| format!("{}", curio))
-    .collect::<Vec<String>>()
-    .join(", ");
-
-  if items.is_empty() {
-    items = "nothing".to_string();
-  }
-  format!("The room contains: {}.", items)
 }
 
 fn parse_line(buf: &String) -> Result<Command, Error> {

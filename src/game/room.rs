@@ -30,11 +30,34 @@ impl Room {
   }
 
   pub fn neighbors_string(&self) -> String {
-    self
+    let mut neighbors = self
       .halls
       .iter()
       .map(|hall| hall.right.borrow().name.clone())
       .collect::<Vec<String>>()
-      .join(", ")
+      .join(", ");
+
+    if neighbors.is_empty() {
+      neighbors = "None".to_string();
+    }
+    neighbors
+  }
+
+  pub fn get_contents(&self) -> String {
+    let contents = &self.contents;
+    let mut items = contents
+      .into_iter()
+      .map(|curio| format!("{}", curio))
+      .collect::<Vec<String>>()
+      .join(", ");
+
+    if items.is_empty() {
+      items = "nothing".to_string();
+    }
+    format!("The room contains: {}.", items)
+  }
+
+  pub fn contains_wumpus(&self) -> bool {
+    self.wumpus
   }
 }
