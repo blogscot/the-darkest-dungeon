@@ -60,14 +60,14 @@ fn parse_line(buf: &String) -> Result<Command, Error> {
   let tokens = buf.trim().split_whitespace();
   let mut tokens = tokens.map(|t| String::from(t).to_lowercase());
 
-  let cmd = try!(tokens.next().ok_or(Error::Parse));
+  let cmd = tokens.next().ok_or(Error::Parse)?;
   match cmd.as_ref() {
     "go" => {
-      let room = try!(tokens.next().ok_or(Error::Parse));
+      let room = tokens.next().ok_or(Error::Parse)?;
       Ok(Go(room))
     }
     "shoot" => {
-      let room = try!(tokens.next().ok_or(Error::Parse));
+      let room = tokens.next().ok_or(Error::Parse)?;
       Ok(Shoot(room))
     }
     "quit" => {
