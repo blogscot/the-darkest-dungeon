@@ -4,6 +4,7 @@ use std::rc::Rc;
 
 use super::room::Room;
 
+#[derive(Clone)]
 pub struct Hall {
   pub left: Rc<RefCell<Room>>,
   pub right: Rc<RefCell<Room>>,

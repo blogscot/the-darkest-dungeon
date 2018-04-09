@@ -12,8 +12,10 @@ const MAX_HP: i32 = 25;
 pub enum Command {
   Go(String),
   Shoot(String),
+  Use(String),
 }
 
+#[derive(Debug)]
 pub struct Player {
   pub location: Rc<RefCell<Room>>,
   pub hp: i32,
@@ -68,11 +70,19 @@ impl Player {
       Command::Go(room_name) => {
         if let Ok(new_room) = self.find_room(room_name) {
           self.location = new_room;
+          println!("{:?}", self);
           return Ok(());
         }
         Err(())
       }
-      _ => Err(()),
+      Command::Use(curio) => {
+        println!("You reach for {}, but something holds you back.", curio);
+        Ok(())
+      }
+      Command::Shoot(room_name) => {
+        println!("You shoot into the {}", room_name);
+        Ok(())
+      }
     }
   }
 

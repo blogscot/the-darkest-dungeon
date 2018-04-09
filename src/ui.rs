@@ -66,6 +66,10 @@ fn parse_line(buf: &String) -> Result<Command, Error> {
       let room = tokens.next().ok_or(Error::Parse)?;
       Ok(Go(room))
     }
+    "use" => {
+      let curio = tokens.next().ok_or(Error::Parse)?;
+      Ok(Use(curio))
+    }
     "shoot" => {
       let room = tokens.next().ok_or(Error::Parse)?;
       Ok(Shoot(room))
