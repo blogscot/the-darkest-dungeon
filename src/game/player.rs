@@ -115,6 +115,10 @@ impl Player {
     let contents = &self.location.borrow().get_contents();
     contents.clone()
   }
+
+  pub fn is_dead(&mut self) -> bool {
+    self.hp <= 0
+  }
 }
 
 /**/

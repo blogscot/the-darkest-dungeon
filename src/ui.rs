@@ -19,6 +19,14 @@ pub fn game_loop(mut player: Player) {
       player.get_room_contents()
     );
     player.handle_room_events();
+    if player.is_dead() {
+      println!(
+        "\nYou try in vain to shovel more wall chicken into \
+         your mouth, but you've been impaled by too many spikes or Wumpi :("
+      );
+      println!("You Lose!");
+      break;
+    }
     print!(
       "\n{}Exits are: {}.\n\nWhat wouldst thou do?\n> ",
       player,
@@ -34,26 +42,15 @@ pub fn game_loop(mut player: Player) {
       Ok(0) => {
         break;
       }
-      Ok(_) => {
-        match parse_line(&buf) {
-          Err(Error::Parse) => println!("I do not know how to {}!", buf.trim()),
-          Err(Error::Quit) => break,
-          Ok(cmd) => {
-            if let Err(_) = player.act(cmd) {
-              println!("I don't know how to {}!", buf.trim());
-            }
+      Ok(_) => match parse_line(&buf) {
+        Err(Error::Parse) => println!("I do not know how to {}!", buf.trim()),
+        Err(Error::Quit) => break,
+        Ok(cmd) => {
+          if let Err(_) = player.act(cmd) {
+            println!("I don't know how to {}!", buf.trim());
           }
         }
-
-        if player.hp <= 0 {
-          println!(
-            "You try in vain to shovel more wall chicken into \
-             your mouth, but you've been impaled by too many spikes or Wumpi :("
-          );
-          println!("You Lose!");
-          return;
-        }
-      }
+      },
     }
   }
   println!("Score: {}", player.gold * 1000);
