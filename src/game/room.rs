@@ -64,7 +64,16 @@ impl Room {
     self.contents = Vec::new();
   }
 
-  pub fn contains_wumpus(&self) -> bool {
-    self.wumpus
+  pub fn shoot_wumpus(&mut self) -> (bool, String) {
+    let mut message = format!("You shoot into {}...", self.name);
+    let mut wumpus_is_dead = false;
+    if self.wumpus {
+      self.wumpus = false;
+      wumpus_is_dead = true;
+      message += "\nYou hear a deathly scream! You have killed the Wumpus!";
+    } else {
+      message += "\nYou're aim is true but nothing seems to happen.";
+    }
+    (wumpus_is_dead, message)
   }
 }

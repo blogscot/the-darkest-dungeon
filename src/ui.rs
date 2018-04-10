@@ -26,6 +26,12 @@ pub fn game_loop(mut player: Player) {
       );
       println!("You Lose!");
       break;
+    } else if player.has_won() {
+      println!(
+        "\nSuccess!. You have scored a great victory against the Wumpi!\nYour praises will be sung for generations to come!"
+      );
+      println!("You are vicorious!");
+      break;
     }
     print!(
       "\n{}Exits are: {}.\n\nWhat wouldst thou do?\n> ",

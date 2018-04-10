@@ -68,11 +68,10 @@ impl Player {
         .find_room(room_name)
         .map(|location| self.location = location),
       Command::Shoot(room_name) => self.find_room(room_name).map(|location| {
-        println!("You shoot into {}...", location.borrow().name);
-        if location.borrow().contains_wumpus() {
-          println!("\nYou hear a deathly scream! You have killed the Wumpus!")
-        } else {
-          println!("You're aim is true but nothing seems to happen.",)
+        let (wumpus_is_dead, message) = location.borrow_mut().shoot_wumpus();
+        println!("{}", message);
+        if wumpus_is_dead {
+          self.won = true;
         }
       }),
     }
@@ -116,6 +115,10 @@ impl Player {
 
   pub fn is_dead(&mut self) -> bool {
     self.hp <= 0
+  }
+
+  pub fn has_won(&self) -> bool {
+    self.won
   }
 }
 
