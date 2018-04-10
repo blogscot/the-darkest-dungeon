@@ -99,11 +99,14 @@ impl Player {
   }
 
   pub fn handle_room_events(&mut self) {
-    let location = self.clone().location;
-    let curios = &location.borrow().contents;
-    for curio in curios {
-      self.use_curio(curio.clone());
+    {
+      let location = self.clone().location;
+      let curios = &location.borrow().contents;
+      for curio in curios {
+        self.use_curio(curio.clone());
+      }
     }
+    &self.location.borrow_mut().clear_contents();
   }
 
   pub fn get_room_name(&mut self) -> String {

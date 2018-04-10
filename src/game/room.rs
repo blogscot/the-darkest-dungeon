@@ -60,6 +60,10 @@ impl Room {
     format!("The room contains: {}.", items)
   }
 
+  pub fn clear_contents(&mut self) {
+    self.contents = Vec::new();
+  }
+
   pub fn contains_wumpus(&self) -> bool {
     self.wumpus
   }
