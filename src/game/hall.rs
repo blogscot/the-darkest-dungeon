@@ -2,12 +2,12 @@ use std::cell::RefCell;
 use std::fmt;
 use std::rc::Rc;
 
-use super::room::Room;
+use super::room::{Location, Room};
 
 #[derive(Clone)]
 pub struct Hall {
-  pub left: Rc<RefCell<Room>>,
-  pub right: Rc<RefCell<Room>>,
+  pub left: Location,
+  pub right: Location,
 }
 
 impl Hall {
@@ -19,7 +19,7 @@ impl Hall {
   }
 
   /// Given a Room `room`, find the room at the other end of Hall `self`.
-  pub fn other(&self, _room: &Room) -> Rc<RefCell<Room>> {
+  pub fn other(&self, _room: &Room) -> Location {
     // TODO: Implement
     unimplemented!();
   }

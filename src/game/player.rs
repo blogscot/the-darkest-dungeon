@@ -1,10 +1,8 @@
 use std;
-use std::cell::RefCell;
 use std::fmt;
-use std::rc::Rc;
 
 use super::curio::Curio;
-use super::room::Room;
+use super::room::Location;
 
 const MAX_HP: i32 = 25;
 
@@ -17,14 +15,14 @@ pub enum Command {
 
 #[derive(Debug)]
 pub struct Player {
-  pub location: Rc<RefCell<Room>>,
+  pub location: Location,
   pub hp: i32,
   pub gold: i32,
   won: bool,
 }
 
 impl Player {
-  pub fn new(location: Rc<RefCell<Room>>) -> Player {
+  pub fn new(location: Location) -> Player {
     Player {
       location: location,
       hp: MAX_HP,
@@ -87,10 +85,10 @@ impl Player {
   }
 
   /// Find one of the neighbors of the current room based on its name. Case insensitive.
-  fn find_room(&self, room: String) -> Result<Rc<RefCell<Room>>, ()> {
+  fn find_room(&self, room: String) -> Result<Location, ()> {
     let halls = &self.location.borrow().halls;
 
-    let mut room_found: Vec<Rc<RefCell<Room>>> = halls
+    let mut room_found: Vec<Location> = halls
       .into_iter()
       .map(|hall| hall.right.clone())
       .filter(|adjacent_room| {

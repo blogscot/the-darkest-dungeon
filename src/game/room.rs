@@ -1,7 +1,10 @@
+use std::cell::RefCell;
 use std::rc::Rc;
 
 use super::curio::Curio;
 use super::hall::Hall;
+
+pub type Location = Rc<RefCell<Room>>;
 
 #[derive(Debug)]
 pub struct Room {

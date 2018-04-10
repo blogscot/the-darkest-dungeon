@@ -7,12 +7,12 @@ use rustc_serialize::json::Json;
 
 use super::curio::Curio;
 use super::hall::Hall;
-use super::room::Room;
+use super::room::{Location, Room};
 
 pub type Result<T> = result::Result<T, String>;
 
 pub struct Board {
-  pub rooms: Vec<Rc<RefCell<Room>>>,
+  pub rooms: Vec<Location>,
 }
 
 impl Board {
@@ -125,7 +125,7 @@ impl Board {
     Ok(())
   }
 
-  pub fn spawn_location(&self) -> Rc<RefCell<Room>> {
+  pub fn spawn_location(&self) -> Location {
     self.rooms[0].clone()
   }
 }

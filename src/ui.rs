@@ -3,6 +3,8 @@ use std::io::{self, Write};
 use game::player::Command;
 use game::player::Player;
 
+use game::room::Location;
+
 #[derive(Debug)]
 enum Error {
   Parse,
@@ -53,6 +55,8 @@ pub fn game_loop(mut player: Player) {
   }
   println!("Score: {}", player.gold * 1000);
 }
+
+fn process_room_events(room: &Location) {}
 
 fn parse_line(buf: &String) -> Result<Command, Error> {
   use game::player::Command::*;
