@@ -10,7 +10,6 @@ const MAX_HP: i32 = 25;
 pub enum Command {
   Go(String),
   Shoot(String),
-  Use(String),
 }
 
 #[derive(Clone, Debug)]
@@ -71,10 +70,6 @@ impl Player {
           return Ok(());
         }
         Err(())
-      }
-      Command::Use(curio) => {
-        println!("You reach for {}, but something holds you back.", curio);
-        Ok(())
       }
       Command::Shoot(room_name) => {
         println!("You shoot into the {}", room_name);
