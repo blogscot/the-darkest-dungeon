@@ -13,7 +13,7 @@ pub enum Command {
   Use(String),
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Player {
   pub location: Location,
   pub hp: i32,
@@ -68,7 +68,6 @@ impl Player {
       Command::Go(room_name) => {
         if let Ok(new_room) = self.find_room(room_name) {
           self.location = new_room;
-          println!("{:?}", self);
           return Ok(());
         }
         Err(())
@@ -97,6 +96,14 @@ impl Player {
       })
       .collect();
     room_found.pop().ok_or(())
+  }
+
+  pub fn handle_room_events(&mut self) {
+    let location = self.clone().location;
+    let curios = &location.borrow().contents;
+    for curio in curios {
+      self.use_curio(curio.clone());
+    }
   }
 }
 

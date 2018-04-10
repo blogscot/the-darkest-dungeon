@@ -7,7 +7,7 @@ const MAX_FOOD_VAL: u32 = 10;
 const NUM_CURIO_VARIANTS: usize = 5;
 const NUM_NONRECURSIVE_CURIOS: usize = 3;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Curio {
   Chest(i32),
   SpikeTrap(i32),
