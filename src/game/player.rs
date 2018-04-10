@@ -64,17 +64,17 @@ impl Player {
   /// Execute the given command on the player and board state.
   pub fn act(&mut self, cmd: Command) -> Result<(), ()> {
     match cmd {
-      Command::Go(room_name) => {
-        if let Ok(new_room) = self.find_room(room_name) {
-          self.location = new_room;
-          return Ok(());
+      Command::Go(room_name) => self
+        .find_room(room_name)
+        .map(|location| self.location = location),
+      Command::Shoot(room_name) => self.find_room(room_name).map(|location| {
+        println!("You shoot into {}...", location.borrow().name);
+        if location.borrow().contains_wumpus() {
+          println!("\nYou hear a deathly scream! You have killed the Wumpus!")
+        } else {
+          println!("You're aim is true but nothing seems to happen.",)
         }
-        Err(())
-      }
-      Command::Shoot(room_name) => {
-        println!("You shoot into the {}", room_name);
-        Ok(())
-      }
+      }),
     }
   }
 
