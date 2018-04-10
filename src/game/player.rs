@@ -105,6 +105,16 @@ impl Player {
       self.use_curio(curio.clone());
     }
   }
+
+  pub fn get_room_name(&mut self) -> String {
+    let room_name = &self.location.borrow().name;
+    room_name.clone()
+  }
+
+  pub fn get_room_contents(&mut self) -> String {
+    let contents = &self.location.borrow().get_contents();
+    contents.clone()
+  }
 }
 
 /**/
@@ -112,13 +122,7 @@ impl fmt::Display for Player {
   /**/
   fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
     /**/
-    write!(
-      f,
-      "You find yourself in {}.\nYou have {} HP and {} gold.",
-      /**/ self.location.borrow().name,
-      self.hp,
-      self.gold
-    )
+    write!(f, "You have {} HP and {} gold.\n", self.hp, self.gold)
     /**/
   }
   /**/

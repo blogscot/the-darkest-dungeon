@@ -10,16 +10,20 @@ enum Error {
 }
 
 pub fn game_loop(mut player: Player) {
+  println!("\nWelcome new adventurer!");
   loop {
-    let room_contents = &player.location.borrow().get_contents();
     // Print a user input prompt.
     println!(
-      "{}\n\n{}\nExits are: {}.",
+      "\nYou find yourself in {}.\n{}\n",
+      player.get_room_name(),
+      player.get_room_contents()
+    );
+    player.handle_room_events();
+    print!(
+      "\n{}Exits are: {}.\n\nWhat wouldst thou do?\n> ",
       player,
-      room_contents,
       player.location.borrow().neighbors_string()
     );
-    print!("\nWhat wouldst thou do?\n> ");
     io::stdout().flush().unwrap();
 
     let mut buf = String::new();
@@ -40,8 +44,6 @@ pub fn game_loop(mut player: Player) {
             }
           }
         }
-
-        player.handle_room_events();
 
         if player.hp <= 0 {
           println!(
