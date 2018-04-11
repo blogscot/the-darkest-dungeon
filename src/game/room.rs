@@ -6,7 +6,7 @@ use super::hall::Hall;
 
 pub type Location = Rc<RefCell<Room>>;
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Room {
   pub name: String,
   pub contents: Vec<Curio>,
@@ -72,7 +72,7 @@ impl Room {
       wumpus_is_dead = true;
       message += "\nYou hear a deathly scream! You have killed the Wumpus!";
     } else {
-      message += "\nYou're aim is true but nothing seems to happen.";
+      message += "\nYour aim is true but nothing seems to happen.";
     }
     (wumpus_is_dead, message)
   }

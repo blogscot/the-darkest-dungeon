@@ -23,7 +23,7 @@ pub struct Player {
 impl Player {
   pub fn new(location: Location) -> Player {
     Player {
-      location: location,
+      location,
       hp: MAX_HP,
       gold: 0,
       won: false,
@@ -65,9 +65,9 @@ impl Player {
   pub fn act(&mut self, cmd: Command) -> Result<(), ()> {
     match cmd {
       Command::Go(room_name) => self
-        .find_room(room_name)
+        .find_room(room_name.as_str())
         .map(|location| self.location = location),
-      Command::Shoot(room_name) => self.find_room(room_name).map(|location| {
+      Command::Shoot(room_name) => self.find_room(room_name.as_str()).map(|location| {
         let (wumpus_is_dead, message) = location.borrow_mut().shoot_wumpus();
         println!("{}", message);
         if wumpus_is_dead {
@@ -78,7 +78,7 @@ impl Player {
   }
 
   /// Find one of the neighbors of the current room based on its name. Case insensitive.
-  fn find_room(&self, room: String) -> Result<Location, ()> {
+  fn find_room(&self, room: &str) -> Result<Location, ()> {
     let halls = &self.location.borrow().halls;
 
     let mut room_found: Vec<Location> = halls
@@ -100,7 +100,7 @@ impl Player {
         self.use_curio(curio.clone());
       }
     }
-    &self.location.borrow_mut().clear_contents();
+    self.location.borrow_mut().clear_contents();
   }
 
   pub fn get_room_name(&mut self) -> String {
@@ -113,7 +113,7 @@ impl Player {
     contents.clone()
   }
 
-  pub fn is_dead(&mut self) -> bool {
+  pub fn is_dead(&self) -> bool {
     self.hp <= 0
   }
 

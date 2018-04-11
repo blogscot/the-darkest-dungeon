@@ -28,7 +28,7 @@ pub fn game_loop(mut player: Player) {
       break;
     } else if player.has_won() {
       println!(
-        "\nSuccess!. You have scored a great victory against the Wumpi!\nYour praises will be sung for generations to come!"
+        "\nSuccess! You have scored a great victory against the Wumpi!\nYour praises will be sung for generations to come!"
       );
       println!("You are vicorious!");
       break;
@@ -52,7 +52,7 @@ pub fn game_loop(mut player: Player) {
         Err(Error::Parse) => println!("I do not know how to {}!", buf.trim()),
         Err(Error::Quit) => break,
         Ok(cmd) => {
-          if let Err(_) = player.act(cmd) {
+          if player.act(cmd).is_err() {
             println!("I don't know how to {}!", buf.trim());
           }
         }
@@ -62,7 +62,7 @@ pub fn game_loop(mut player: Player) {
   println!("Score: {}", player.gold * 1000);
 }
 
-fn parse_line(buf: &String) -> Result<Command, Error> {
+fn parse_line(buf: &str) -> Result<Command, Error> {
   use game::player::Command::*;
 
   let tokens = buf.trim().split_whitespace();

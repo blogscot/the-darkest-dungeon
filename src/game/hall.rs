@@ -4,7 +4,7 @@ use std::rc::Rc;
 
 use super::room::{Location, Room};
 
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Hall {
   pub left: Location,
   pub right: Location,
