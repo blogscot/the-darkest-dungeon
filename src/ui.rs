@@ -78,6 +78,7 @@ fn parse_line(buf: &str) -> Result<Command, Error> {
       let room = tokens.next().ok_or(Error::Parse)?;
       Ok(Shoot(room))
     }
+    "help" => Ok(Help),
     "quit" => {
       println!("Bye for now!");
       Err(Error::Quit)

@@ -9,6 +9,7 @@ const MAX_HP: i32 = 25;
 #[derive(Debug)]
 pub enum Command {
   Go(String),
+  Help,
   Shoot(String),
 }
 
@@ -64,6 +65,10 @@ impl Player {
   /// Execute the given command on the player and board state.
   pub fn act(&mut self, cmd: Command) -> Result<(), ()> {
     match cmd {
+      Command::Help => {
+        println!("Your only commands are: Go, and Shoot. Sad, I know.");
+        Ok(())
+      }
       Command::Go(room_name) => self
         .find_room(room_name.as_str())
         .map(|location| self.location = location),
