@@ -94,10 +94,16 @@ impl Player {
 
   pub fn handle_room_events(&mut self) {
     {
+      // Use all rooms curios
       let location = self.clone().location;
       let curios = &location.borrow().contents;
       for curio in curios {
         self.use_curio(curio.clone());
+      }
+      // Is Wumpus present?
+      if location.borrow().wumpus {
+        println!("As you enter the room the Wumpus attacks you without warning.");
+        self.hp = 0;
       }
     }
     self.location.borrow_mut().clear_contents();
