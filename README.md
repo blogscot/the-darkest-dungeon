@@ -14,4 +14,4 @@ The aim of the game is to explore the various castle rooms collecting treasure a
 
 ## Background
 
-The original homework assignment, set as part of University of Pennsylvania's Comp Sci Programme in 2016, can be found here: [https://github.com/cis198-2016s/homework/tree/master/hw05]
+The original homework assignment, set as part of University of Pennsylvania's Comp Sci Programme in 2016, can be found [here](https://github.com/cis198-2016s/homework/tree/master/hw05).
